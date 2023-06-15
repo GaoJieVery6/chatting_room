@@ -1,5 +1,7 @@
 #include "controller.h"
 #include <stdio.h>
+
+
 Controller::Controller()
 {
     mySer = new Server();
