@@ -11,11 +11,10 @@
 #include <iostream>
 
 #include "clientdialog.h"
-#include "error.h"
 #include "ui_mainwindow.h"
-#include "regerror.h"
 #include "room.h"
 #include "const.h"
+#include "warning.h"
 
 using std::string;
 using std::cout;
@@ -33,8 +32,6 @@ public:
     explicit login(QWidget *parent = nullptr);
     ~login();
     clientDialog* new_client;
-    error* new_error;
-    regerror* new_regerror;
     room* new_room;
 
 private slots:

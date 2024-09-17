@@ -8,7 +8,7 @@ room::room(QWidget *parent) :
     ui->setupUi(this);
     //roominfo="sfs";
     cout << "room:"<< roominfo.toStdString() << endl;
-    ui->info->setText(roominfo);
+    ui->info->setText(roominfo); //显示已建聊天室信息
 }
 
 room::~room()

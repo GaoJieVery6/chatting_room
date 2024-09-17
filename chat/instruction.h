@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QBitmap>
 #include <QPainter>
+
 #include "const.h"
 
 namespace Ui {

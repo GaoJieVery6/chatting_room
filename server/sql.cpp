@@ -5,10 +5,9 @@ const int SQL::PORT = 3306;
 const QString SQL::DB = "chat";
 const QString SQL::TABLE_USER = "user";
 const QString SQL::TABLE_RECORD = "record";
-const QString SQL::TABLE_ROOM = "room";
+//const QString SQL::TABLE_ROOM = "room";
 const QString SQL::USERNAME = "root";
 const QString SQL::PWD = "";
-//const QString SQL::DB_TABLE = DB + "." + TABLE;
 const QString SQL::CREATE_TABLE_USER =
         "create table if not exists " + TABLE_USER +
         "(\
@@ -16,12 +15,13 @@ const QString SQL::CREATE_TABLE_USER =
           Code varchar(20) not null\
          )default charset = utf8";
 
-const QString SQL::CREATE_TABLE_ROOM =
+/*const QString SQL::CREATE_TABLE_ROOM =
         "create table if not exists " + TABLE_ROOM +
         "(\
           ID varchar(20) not null primary key,\
           Code varchar(20) not null\
-         )default charset = utf8";
+          foreign key(Room) references room(ID) on delete cascade on update cascade\
+         )default charset = utf8";*/
 
 const QString SQL::CREATE_TABLE_RECORD =
         "create table if not exists " + TABLE_RECORD +
@@ -30,8 +30,7 @@ const QString SQL::CREATE_TABLE_RECORD =
           Room varchar(20) not null,\
           Msg varchar(50),\
           Date datetime,\
-          foreign key(ID) references user(ID) on delete cascade on update cascade,\
-          foreign key(Room) references room(ID) on delete cascade on update cascade\
+          foreign key(ID) references user(ID) on delete cascade on update cascade\
          )default charset = utf8";
 
 
@@ -107,14 +106,6 @@ bool SQL::createDB()
     }
 
     if(MODE == "Server"){
-        database.exec(CREATE_TABLE_ROOM);
-        if(database.lastError().isValid()){
-            qDebug() << database.lastError().text();
-            return false;
-        }
-    }
-
-    if(MODE == "Server"){
         database.exec(CREATE_TABLE_RECORD);
         if(database.lastError().isValid()){
             qDebug() << database.lastError().text();
@@ -175,20 +166,6 @@ bool SQL::updateCode(QString user, QString code)
     return false;
 }
 
-// bool SQL::updateName(QString user, QString name)
-// {
-//     QSqlQuery query;
-//     query.prepare("update " + TABLE + " Name = ? where ID = ?");
-//     query.addBindValue(name);
-//     query.addBindValue(user);
-//     if(query.exec())
-//         return true;
-//     else{
-//         qDebug() << query.lastError().text();
-//         return false;
-//     }
-// }
-
 bool SQL::exists(QString user)
 {
     if(MODE == "Server"){
@@ -214,67 +191,6 @@ bool SQL::login(QString user, QString code)
         QSqlQuery query;
         query.prepare("select Code from " + TABLE_USER + " where ID = ?");
         query.addBindValue(user);
-        if(query.exec()){
-            if(!query.size())
-                return false;
-            query.next();
-            if(query.value(0).toString() == code)
-                return true;
-            else
-                return false;
-        }
-        else{
-            qDebug() << query.lastError().text();
-            return false;
-        }
-    }
-    return false;
-}
-
-bool SQL::exists_room(QString room)
-{
-    if(MODE == "Server"){
-        QSqlQuery query;
-        query.prepare("select ID from " + TABLE_ROOM + " where ID = ?");
-        query.addBindValue(room);
-        if(query.exec()){
-            if(!query.size())
-                return false;
-            return true;
-        }
-        else{
-            qDebug() << query.lastError().text();
-            return false;
-        }
-    }
-    return false;
-}
-
-bool SQL::createRoom(QString room, QString code)
-{
-    if(MODE == "Server"){
-        qDebug() << room;
-        qDebug() << code;
-        QSqlQuery query;
-        query.prepare("insert into " + TABLE_ROOM + " (ID,Code) VALUES (?,?)");
-        query.addBindValue(room);
-        query.addBindValue(code);
-        if(query.exec())
-            return true;
-        else{
-            qDebug() << query.lastError().text();
-            return false;
-        }
-    }
-    return false;
-}
-
-bool SQL::enterRoom(QString room, QString code)
-{
-    if(MODE == "Server"){
-        QSqlQuery query;
-        query.prepare("select Code from " + TABLE_ROOM + " where ID = ?");
-        query.addBindValue(room);
         if(query.exec()){
             if(!query.size())
                 return false;

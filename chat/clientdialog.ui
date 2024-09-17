@@ -13,31 +13,6 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QPushButton" name="shuaxin">
-   <property name="geometry">
-    <rect>
-     <x>550</x>
-     <y>480</y>
-     <width>111</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>75</width>
-     <height>23</height>
-    </size>
-   </property>
-   <property name="text">
-    <string>refresh</string>
-   </property>
-   <property name="iconSize">
-    <size>
-     <width>50</width>
-     <height>20</height>
-    </size>
-   </property>
-  </widget>
   <widget class="QTextEdit" name="chengyuan">
    <property name="geometry">
     <rect>
@@ -46,19 +21,6 @@
      <width>181</width>
      <height>431</height>
     </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_2">
-   <property name="geometry">
-    <rect>
-     <x>511</x>
-     <y>-9</y>
-     <width>16</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
    </property>
   </widget>
   <widget class="QPlainTextEdit" name="output">
@@ -75,25 +37,6 @@
      <width>16777215</width>
      <height>301</height>
     </size>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>21</x>
-     <y>265</y>
-     <width>469</width>
-     <height>12</height>
-    </rect>
-   </property>
-   <property name="maximumSize">
-    <size>
-     <width>16777215</width>
-     <height>12</height>
-    </size>
-   </property>
-   <property name="text">
-    <string/>
    </property>
   </widget>
   <widget class="QTextEdit" name="input">
@@ -162,14 +105,6 @@
     </size>
    </property>
   </widget>
-  <zorder>chengyuan</zorder>
-  <zorder>label_2</zorder>
-  <zorder>output</zorder>
-  <zorder>label</zorder>
-  <zorder>input</zorder>
-  <zorder>pushButton</zorder>
-  <zorder>send</zorder>
-  <zorder>shuaxin</zorder>
  </widget>
  <resources/>
  <connections/>

@@ -5,21 +5,14 @@
 
 // 头函数引用部分
 #include "mainwindow.h"
-#include <iostream>
-#include <map>
-using namespace std;
-
-// 全局变量定义部分
-map<string, set<QTcpSocket*> > rN2Soc; //roomNameToSocket;
-Controller myCon;
-
+#include "ui_mainwindow.h"
 
 // 函数体部分
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow) {
     ui->setupUi(this);
-    lab_listen = new QLabel("监听状态：");
+    lab_listen = new QLabel("监听状态:");
     lab_listen->setMinimumWidth(150);
     ui->statusBar->addWidget(lab_listen);
 
@@ -31,21 +24,23 @@ MainWindow::MainWindow(QWidget *parent) :
     //当server有新的连接时，响应到 onNewConnection()函数
     connect(tcp_server, SIGNAL(newConnection()), this, SLOT(onNewConnection()));
 
+    myCon = new Controller();
+
     this->setWindowTitle("server");
 }
 
 MainWindow::~MainWindow() {
+    delete myCon;
     delete ui;
 }
 
 void MainWindow::on_listen_clicked() {
-    //开始监听
-    QString     IP = ui->server_ip->text(); //IP地址
-    quint16     port = ui->server_port->text().toInt(); //端口
-    QHostAddress    addr(IP);
+    QString IP = ui->server_ip->text(); //IP地址
+    quint16 port = ui->server_port->text().toInt(); //端口
+    QHostAddress addr(IP);
 
     //开始监听
-    tcp_server->listen(addr, port); //
+    tcp_server->listen(addr, port);
 
 
     ui->information->appendPlainText("**开始监听...");
@@ -69,7 +64,7 @@ void MainWindow::onNewConnection() {
 
     connect(tcp_socket, SIGNAL(connected()), this, SLOT(onClientConnected()));
 
-    onClientConnected();//
+    onClientConnected();
 
     connect(mtcp_socket, SIGNAL(disconnected(MTcpSocket *)),
             this, SLOT(onClientDisconnected(MTcpSocket *)));
@@ -77,6 +72,7 @@ void MainWindow::onNewConnection() {
     connect(tcp_socket, SIGNAL(readyRead()),
             this, SLOT(onSocketReadyRead()));
 }
+
 void MainWindow::onClientConnected() {
     //客户端接入时
     ui->information->appendPlainText("**client socket connected");
@@ -109,31 +105,33 @@ void MainWindow::onClientDisconnected(MTcpSocket *socket) {
                 ccount -- ;
         }
         if(ccount == 0)
-            (myCon.mySer->rNP).erase(roomName);
+            (myCon->mySer->rNP).erase(roomName);
 
     }
 
-    map<QTcpSocket*, string> reg = myCon.mySer->reg;
+    map<QTcpSocket*, string> reg = myCon->mySer->reg;
     for(auto i = reg.begin(); i != reg.end(); ++ i){
         int flag = 0;
         for(auto j = tcp_sockets.begin(); j != tcp_sockets.end(); ++ j){
-            if(i->first == *j)    flag = 1;
+            if(i->first == *j)
+                flag = 1;
         }
-        if(flag == 0 && myCon.mySer->online.count(i->second)){
-            myCon.mySer->online.erase(i->second);
+        if(flag == 0 && myCon->mySer->online.count(i->second)){
+            myCon->mySer->online.erase(i->second);
         }
     }
 }
+
 void MainWindow::onSocketReadyRead() {
     //服务端收到了信息
     for(auto i = tcp_sockets.begin(); i != tcp_sockets.end(); ++i) {//循环判断是哪一个客户端发来的
         tcp_socket = *i;
-        while(tcp_socket->canReadLine())
-        {//是否有可读的信息
+        while(tcp_socket->canReadLine()){//是否有可读的信息
             QByteArray str = tcp_socket->readLine();
             string name, roomName, YorN;
             int kind;
-            QByteArray str1 = myCon.opMsg(str, name, roomName, YorN, kind);
+            QByteArray str1 = myCon->opMsg(str, name, roomName, YorN, kind);
+
             ui->information->appendPlainText("[in] " + str);
             if(kind == 4){
                 tcp_socket->write(str1);
@@ -141,7 +139,7 @@ void MainWindow::onSocketReadyRead() {
             if(kind == 1){
                 tcp_socket->write(str1);
                 if(YorN[0] == 'Y'){
-                    myCon.mySer->reg[tcp_socket] = name;
+                    myCon->mySer->reg[tcp_socket] = name;
                 }
             }
             if(kind == 3){

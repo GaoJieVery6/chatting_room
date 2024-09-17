@@ -30,38 +30,25 @@ SOURCES += \
     clientdialog.cpp \
     login.cpp \
     instruction.cpp \
-    error.cpp \
-    regerror.cpp \
     room.cpp \
-    error_no.cpp \
-    error_nn.cpp \
-    registerin.cpp \
-    const.cpp
+    const.cpp \
+    warning.cpp
 
 HEADERS += \
         mainwindow.h \
     clientdialog.h \
     login.h \
     instruction.h \
-    registerin.h \
-    error.h \
-    regerror.h \
     room.h \
-    error_no.h \
-    error_nn.h \
-    const.h
+    const.h \
+    warning.h
 
 FORMS += \
         mainwindow.ui \
     clientdialog.ui \
     login.ui \
     instruction.ui \
-    error.ui \
-    regerror.ui \
-    room.ui \
-    error_no.ui \
-    error_nn.ui \
-    registerin.ui
+    room.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -15,6 +15,7 @@ public:
         connect(this->m_tcp_socket, SIGNAL(disconnected()),
                 this, SLOT(onClientDisconnected()));
     }
+
     inline QTcpSocket* getTcpScoket() {
         return this->m_tcp_socket;
     }

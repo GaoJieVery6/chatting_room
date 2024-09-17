@@ -9,8 +9,10 @@
 #include <QKeyEvent>
 #include <QBitmap>
 #include <QPainter>
+#include <QTimer>
 #include <string>
 #include <iostream>
+
 #include "const.h"
 
 using std::string;
@@ -28,16 +30,16 @@ class clientDialog : public QDialog
 public:
     explicit clientDialog(QWidget *parent = nullptr);
     ~clientDialog();
+    QTimer* flush_timer;
 
 private slots:
     void on_pushButton_clicked();
 
     void on_send_clicked();
 
-    //void on_input_textChanged();
-
     void RoundRect();
-    void on_shuaxin_clicked();
+
+    void timerTimeOut();
 
 public:
     Ui::clientDialog *ui;

@@ -11,7 +11,6 @@
 #include <iostream>
 #include <map>
 #include <set>
-#include "ui_mainwindow.h"
 #include "controller.h"
 #include "mtcpsocket.h"
 
@@ -34,27 +33,26 @@ private:
     Ui::MainWindow *ui;
 
 private:
+    //控制器
+    Controller* myCon;                   //控制器
+
     QLabel *lab_listen;
 
-    //服务端
-    QTcpServer *tcp_server;
+    QTcpServer *tcp_server;              //服务端
 
-    //当前连接
-    QTcpSocket *tcp_socket;
+    QTcpSocket *tcp_socket;              //当前连接
     MTcpSocket *mtcp_socket;
 
-    //所有的连接都保存在这里
-    QList<MTcpSocket *>  mtcp_sockets;
+    QList<MTcpSocket *>  mtcp_sockets;   //所有的连接都保存在这里
 
-    //所有的连接都保存在这里
-    QList<QTcpSocket *>  tcp_sockets;
+    QList<QTcpSocket *>  tcp_sockets;    //所有的连接都保存在这里
 
+    map<string, set<QTcpSocket*> > rN2Soc; //roomNameToSocket
 protected:
     //当服务端关闭
     void closeEvent(QCloseEvent *event);
 private slots:
     //客户端断开时
-
     void onClientDisconnected(MTcpSocket *);
     //客户端连接时
     void onClientConnected();
